@@ -1,34 +1,40 @@
-# Jev 模型演示（EasyGateway）
+# Jev · System One 演示
 
-一个纯静态的单页 Demo，通过 OpenAI 兼容接口调用本机 [EasyGateway](http://127.0.0.1:4001)
-上的 **Jev 1.13** 模型（`jev-1.13`）。
+通过 [EasyGateway](https://github.com/hwj123hwj/litellm-gateway) 的 `POST /v1/systemone` 调用 Jev，输入 `state + questions`，展示 `noul`、`choice`、`score` 答案、概率和原始 JSON。
 
-**在线地址**：<https://hwj123hwj.github.io/jev-demo/>
+**在线地址**：[hwj123hwj.github.io/jev-demo](https://hwj123hwj.github.io/jev-demo/)
 
-## 使用前提
+## 运行
 
-| 条件 | 说明 |
-| --- | --- |
-| 网关在线 | github.io 上的页面只能在你自己电脑的浏览器里连到 `127.0.0.1:4001`（或你暴露出来的网关地址） |
-| API Key | 在页面「⚙ 连接设置」里填入网关 master key，**只保存在你浏览器的 localStorage** |
-| opencode 授权 | `jev-1.13` 走 opencode Zen 的**授权档**：需先在网关完成 opencode 渠道设备码登录（管理台 `/admin/dashboard`），否则上游返回 `Workspace selection is required` |
+1. 使用 EasyGateway **v0.3.9 或更新版本**，并更新其 `providers.yaml` 中的 Jev 配置。
+2. 打开演示页，填入本机 `http://127.0.0.1:4001/v1` 或 mini 等可达网关地址，以及网关 API Key。
+3. 检测连接，选择模型，编辑待判断内容和问题 JSON，点击“开始评估”。
 
-## 为什么不是 jev-1.13-free（免费档）？
+网关地址中的 `127.0.0.1` 指浏览器所在电脑。浏览器可能要求允许访问本地网络，网关也需要允许页面来源的 CORS；在线页的来源是 `https://hwj123hwj.github.io`。
 
-- 2026-10-22 实测：opencode Zen 免费池已将访问限制为官方 OpenCode 客户端
-  （客户端指纹校验），且 `jev-1.13-free` 这个 id 在上游后端本身处于故障状态
-  （三种协议均返回 `ModelProtocolUnsupported`，其它免费模型正常）。
-- 因此本演示锁定**付费授权档 `jev-1.13`**：用你自己的账号登录后通过网关正规调用，
-  稳定且不依赖对免费池的任何非官方用法。
+## 模型与授权
 
-## 安全说明
+- `jev-1.13-free` 使用上游免费额度。额度耗尽时展示真实 `429` 错误，不会自动转为付费请求。
+- `jev-1.13` 需要在**网关服务器**的受保护 `.env` 配置 `OPENCODE_API_KEY`，再重启服务。它是选择了工作区的 OpenCode Console API Key，设备码 OAuth 登录不能替代。服务端 Key 不交给浏览器。
+- 目录中出现模型只说明已经注册，不代表授权、额度或推理已验证。检测连接会检查 `protocol: systemone`，成功评估则必须收到 `answers`。
 
-- 页面不内嵌、不上传任何密钥；所有请求由浏览器直连你填写的 Base URL。
-- 不填 Key、不连网关时，页面是纯静态的"空壳"，对访客无副作用。
+实现依据 [OpenCode Jev 协议](https://opencode.ai/v2/docs/console/models/#jev) 和 [TypeSafe 快速开始](https://docs.typesafe.ai/introduction/quickstart)，调用网关后由服务端转发到 `https://opencode.ai/inference/systemone/v1/systemone`。
 
-## 本地开发
+```json
+{"model":"jev-1.13-free","state":"支付连续失败三天，客户无法下单。","questions":{"is_urgent":{"type":"noul","instructions":"是否需要紧急处理？"}}}
+```
+
+## 密钥与数据
+
+网关 Key 只保存在当前页面内存，刷新后清空。浏览器只持久化网关地址和模型选项；升级会从旧版设置记录移除曾保存的 Key。请求直接发往所填网关，不使用第三方脚本，也不把问题或答案保存到浏览器存储。网关可能按其归档配置保存请求，保留策略由网关管理员控制。
+
+## 本地开发与测试
+
+无需安装依赖或打包：
 
 ```bash
-cd jev-demo
-python3 -m http.server 8080   # 或直接双击 index.html
+python3 -m http.server 8080
+node --test tests/*.test.cjs
 ```
+
+自动测试覆盖原生请求契约、问题校验、错误类型、结果完整性。浏览器验证和真实上游测试分别记录，授权或额度错误不能写成推理成功。
