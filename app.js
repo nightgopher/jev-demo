@@ -199,7 +199,7 @@
     function selectedExample() { return examples.find(example => example.id === $('preset').value); }
     function describeExample() {
       const example = selectedExample();
-      if (!example) return;
+      if (!example || !$('exampleSummary')) return;
       const types = Object.values(example.questions).map(question => question.type);
       $('exampleSummary').textContent = example.description;
       $('exampleTypes').textContent = [['noul', '概率判断'], ['choice', '分类'], ['score', '评分']]
