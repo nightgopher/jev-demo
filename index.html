@@ -148,7 +148,7 @@
     chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
     return el;
   }
-  function meta(text) { addMsg('meta', text); }
+  function meta(text) { return addMsg('meta', text); }
 
   $('toggle').onclick = () => $('setup').classList.toggle('open');
   $('clear').onclick = () => { history = []; chat.innerHTML = ''; };
