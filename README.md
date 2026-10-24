@@ -1,8 +1,8 @@
 # Jev · System One 演示
 
-通过 [EasyGateway](https://github.com/hwj123hwj/litellm-gateway) 的 `POST /v1/systemone` 调用 Jev，输入 `state + questions`，展示 `noul`、`choice`、`score` 答案、概率和原始 JSON。
+通过 [EasyGateway](https://github.com/nightgopher/litellm-gateway) 的 `POST /v1/systemone` 调用 Jev，输入 `state + questions`，展示 `noul`、`choice`、`score` 答案、概率和原始 JSON。
 
-**在线地址**：[hwj123hwj.github.io/jev-demo](https://hwj123hwj.github.io/jev-demo/)
+**在线地址**：[nightgopher.github.io/jev-demo](https://nightgopher.github.io/jev-demo/)
 
 ## 运行
 
@@ -10,7 +10,7 @@
 2. 打开演示页，填入本机 `http://127.0.0.1:4001/v1` 或 mini 等可达网关地址，以及网关 API Key。
 3. 检测连接，选择模型，编辑待判断内容和问题 JSON，点击“开始评估”。
 
-网关地址中的 `127.0.0.1` 指浏览器所在电脑。浏览器可能要求允许访问本地网络，网关也需要允许页面来源的 CORS；在线页的来源是 `https://hwj123hwj.github.io`。
+网关地址中的 `127.0.0.1` 指浏览器所在电脑。浏览器可能要求允许访问本地网络，网关也需要允许页面来源的 CORS；在线页的来源是 `https://nightgopher.github.io`。
 
 ## 示例场景
 
