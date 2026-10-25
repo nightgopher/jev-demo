@@ -1,6 +1,6 @@
 # Jev · System One 演示
 
-通过 [EasyGateway](https://github.com/nightgopher/litellm-gateway) 的 `POST /v1/systemone` 调用 Jev，输入 `state + questions`，展示 `noul`、`choice`、`score` 答案、概率和原始 JSON。
+通过 [EasyGateway](https://github.com/nightgopher/easygateway) 的 `POST /v1/systemone` 调用 Jev，输入 `state + questions`，展示 `noul`、`choice`、`score` 答案、概率和原始 JSON。
 
 **在线地址**：[nightgopher.github.io/jev-demo](https://nightgopher.github.io/jev-demo/)
 
